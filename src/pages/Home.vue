@@ -18,14 +18,13 @@
       </q-card-section>
     </q-card>
   </div>
-  <div v-if="data">
-    <p>País: {{data.location.country}}</p>
-    <p>Cidade: {{data.location.name}}</p>
+  <div v-if="showAllData" class="containerData">
+    <img :src="icon" size="500" />
+    <p>País: {{ data.location.country }}</p>
+    <p>Cidade: {{ data.location.name }}</p>
     <p>Estado: {{ data.location.region }}</p>
-    <p>Nuvems: {{ data.current.cloud }}</p>
-    <p>Condição: {{ data.current.condition.text }}</p>
+    <p>Temperatura: {{ data.current.temp_c }}°C</p>
     <p>Umidade: {{ data.current.humidity }}%</p>
-    <p>Graus: {{ data.current.temp_c }}°C</p>
   </div>
 </template>
 
@@ -36,11 +35,12 @@ import api from "../services/api";
 export default defineComponent({
   name: "Home",
   setup() {
-    const stars = ref(4);
+    const showAllData = ref(false);
     const weather = ref([]);
     const cityName = ref("");
     const region = ref("");
     const data = ref([]);
+    const icon = ref("");
 
     async function getLocationName() {
       await api.get(`${cityName.value}`).then((response) => {
@@ -48,21 +48,23 @@ export default defineComponent({
         region.value = response.data.location.region;
         cityName.value = response.data.location.name;
         data.value = response.data;
+        icon.value = response.data.current.condition.icon;
       });
+      if (data != null) {
+        showAllData.value = true;
+      }
     }
     async function clearFields() {
-      weather.value = null;
-      region.value = "";
+      showAllData.value = false;
       cityName.value = "";
-      data.value = null;
     }
-
     return {
       weather,
       cityName,
-      stars,
       region,
+      showAllData,
       data,
+      icon,
       getLocationName,
       clearFields,
     };
@@ -100,5 +102,15 @@ export default defineComponent({
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+}
+
+.containerData {
+  background-color: rgb(0, 0, 0, 0.5);
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  height: 57vh;
 }
 </style>
