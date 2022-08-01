@@ -73,7 +73,7 @@ export default defineComponent({
       showIconWeather.value = false;
       cityName.value = "";
     }
-    
+
     return {
       cityName,
       showAllData,
@@ -94,8 +94,7 @@ export default defineComponent({
   color: #fff;
 }
 
-.container,
-.forms {
+.container {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -113,10 +112,6 @@ export default defineComponent({
   justify-content: center;
   height: 100px;
   padding: 3px;
-}
-
-.forms {
-  width: 25px;
 }
 
 .textExamples {
@@ -151,6 +146,13 @@ p {
   flex-direction: row;
   justify-content: space-evenly;
   align-items: flex-start;
-  height: 25vh;
+}
+
+@media (min-height: 700px) {
+  .containerData {
+    height: 31vh;
+    width: 100%;
+    padding: 7px;
+  }
 }
 </style>
